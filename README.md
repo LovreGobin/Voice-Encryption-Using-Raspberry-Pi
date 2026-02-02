@@ -36,7 +36,7 @@ For data encryption, the **Fernet** module from the `cryptography` library was u
 Both headsets are connected via their respective USB adapters to the Raspberry Pi. The microphone of the first headset is used to record the voice signal, which is then digitized and encrypted on the Raspberry Pi using the Fernet key. If the same secret key is used for decryption, the encrypted data can be successfully decrypted, and the result is reproduced on the second headset, where the user hears the original voice signal in an understandable form (Figure 2.1).
 
 <img width="975" height="78" alt="image" src="https://github.com/user-attachments/assets/b64602b2-93df-417b-97f4-0e3cd35b1a20" /><br>
-![Flow diagram for voice encryption and decryption](Figure 2.1)
+Flow diagram for voice encryption and decryption
 
 In the extended part of the system, encrypted data is additionally transmitted via radio waves using two HackRF devices. On the transmitting side, the encrypted message is modulated and sent from the first HackRF device to the selected RF frequency. On the receiving side, the second HackRF device receives and demodulates the signal and reconstructs the encrypted data from the obtained binary stream. Decryption is then attempted on the obtained data using the same Fernet key as on the transmitting side; in case of successful decryption, the original voice signal is obtained, which can be reproduced on the receiving headset.
 
@@ -247,15 +247,15 @@ p.terminate()
 The functionality of the system (Figure 3.1) was tested by first encrypting and saving the recorded voice signal to a file, then transferring it to another device where the decryption and playback program was running. When using the correct Fernet key, the encrypted audio recording was successfully decrypted into the original sample array and reproduced on the selected output audio device (headset). In all tests performed, the message after decryption was clearly understandable, without any noticeable distortions or interruptions in playback, which confirms the correct operation of the implemented voice communication encryption and decryption system.
 
 <img width="783" height="587" alt="image" src="https://github.com/user-attachments/assets/942d96de-c65e-42e3-9f0b-9eb172522958" /><br>
-![System for voice encryption and decryption](Figure 3.1)
+System for voice encryption and decryption
 
 Figures 3.2 and 3.3 show console output when running encryption and decryption.
 
 <img width="592" height="543" alt="image" src="https://github.com/user-attachments/assets/7171abab-60ea-42e4-990d-d7921d7facff" /><br>
-![Console output during encryption](Figure 3.2)
+Console output during encryption
 
 <img width="598" height="569" alt="image" src="https://github.com/user-attachments/assets/ffa6a990-96fd-46fb-b722-8a458bf73510" /><br>
-![Console output during decryption](Figure 3.3)
+Console output during decryption
 
 ---
 
@@ -595,12 +595,12 @@ while True:
 In testing with both HackRFs on the same laptop, the system managed to achieve transmission and reception of packetized encrypted data (Figure 4.1), but final decryption was unsuccessful due to packet loss or damage in the RF channel.
 
 <img width="756" height="567" alt="image" src="https://github.com/user-attachments/assets/48d3f1e2-d74a-4dff-9a4f-bfeb98b3c61a" /><br>
-![System with two HackRF devices](Figure 4.1)
+System with two HackRF devices
 
 Since symmetric Fernet encryption is used at a higher level, which includes HMAC for integrity and authenticity verification of encrypted data in addition to AES encryption, any even smallest change in bytes in the encrypted message causes decryption to return an `InvalidToken` error and completely refuse. Therefore, even when most of the encrypted audio recording is successfully transmitted and only individual packets are missing or partially damaged, Fernet does not allow partial decryption nor deliver partially decoded content, but protects message integrity by blocking any output. Console outputs during data sending and receiving can be seen in Figure 4.2.
 
 <img width="975" height="439" alt="image" src="https://github.com/user-attachments/assets/5ad5bfdd-ec62-4598-8a1f-8268681de98e" /><br>
-![Console outputs during sending and receiving](Figure 4.2)
+Console outputs during sending and receiving
 
 ---
 
